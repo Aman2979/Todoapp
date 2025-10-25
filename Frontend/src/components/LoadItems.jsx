@@ -10,7 +10,7 @@ const LoadItems = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://localhost:3000/todos")
+    fetch("https://todoapp-eta-sooty.vercel.app/")
       .then((res) => res.json())
       .then((items) => {
         const newItems = items.map(todoItemToClientModel);
