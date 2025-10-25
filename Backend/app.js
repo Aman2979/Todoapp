@@ -21,6 +21,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
 
+app.use(cors({
+    origin: "https://todoapp-k7a8.vercel.app", // allow your frontend
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+}));
+
 app.use(itemsRouter)
 app.use(errorController.get404);
 
