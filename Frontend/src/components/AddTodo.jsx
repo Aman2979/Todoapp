@@ -14,7 +14,7 @@ const AddTodo = () => {
     const todoDate = todoDateInput.current.value;
     todoTextInput.current.value = '';
     todoDateInput.current.value = '';
-    fetch("https://todoapp-eta-sooty.vercel.app/", {
+    fetch(`https://todoapp-eta-sooty.vercel.app/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
