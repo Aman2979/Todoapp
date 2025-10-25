@@ -14,49 +14,34 @@ const TodoItem = ({ id, todoText, todoDate, completed }) => {
     day: "numeric",
   });
 
-  const toggleCheckbox = async () => {
-    // Optimistically update UI before server call for better UX
-    setIsComplete((prev) => !prev);
-
-    try {
-      const response = await fetch(`https://todoapp-eta-sooty.vercel.app/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ completed: !isComplete }),
+  const toggleCheckbox = () => {
+    fetch(`https://todoapp-eta-sooty.vercel.app/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ completed: !isComplete }),
+    })
+      .then((res) => res.json())
+      .then((updatedItem) => {
+        const clientUpdatedItem = todoItemToClientModel(updatedItem);
+        setIsComplete(clientUpdatedItem.completed);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to update todo item");
-      }
-
-      const updatedItem = await response.json();
-      const clientUpdatedItem = todoItemToClientModel(updatedItem);
-
-      // In case the server state is different than the one we set locally
-      setIsComplete(clientUpdatedItem.completed);
-    } catch (err) {
-      console.log(err);
-      // Revert optimistic update if the request failed
-      setIsComplete((prev) => !prev);
-    }
   };
 
-  const deleteHandler = async () => {
-    try {
-      const response = await fetch(`https://todoapp-eta-sooty.vercel.app/${id}`, {
-        method: "DELETE",
+  const deleteHandler = () => {
+    fetch(`https://todoapp-eta-sooty.vercel.app/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((deletedItem) => {
+        const clientDeletedItem = todoItemToClientModel(deletedItem);
+        deleteTodoItem(clientDeletedItem.id);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete todo item");
-      }
-
-      const deletedItem = await response.json();
-      const clientDeletedItem = todoItemToClientModel(deletedItem);
-      deleteTodoItem(clientDeletedItem.id);
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   return (
