@@ -15,7 +15,7 @@ const TodoItem = ({ id, todoText, todoDate, completed }) => {
   });
 
   const toggleCheckbox = () => {
-    fetch(`https://todoapp-eta-sooty.vercel.app//${id}`, {
+    fetch(`https://todoapp-kappa-jade.vercel.app/api/todos/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ completed: !isComplete }),
@@ -31,7 +31,7 @@ const TodoItem = ({ id, todoText, todoDate, completed }) => {
   };
 
   const deleteHandler = () => {
-    fetch(`https://todoapp-eta-sooty.vercel.app//${id}`, {
+    fetch(`https://todoapp-kappa-jade.vercel.app/api/todos/${id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())
